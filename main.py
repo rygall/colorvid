@@ -79,7 +79,7 @@ def deoldify_smoothed(frames):
 
 def save_video(frames):
     clip = ImageSequenceClip(list(frames), fps=20)
-    clip.write_videofile('output.mp4')
+    clip.write_videofile('result_videos/output.mp4')
                 
 
 if __name__ == "__main__":
@@ -90,7 +90,7 @@ if __name__ == "__main__":
     parser.add_argument('--output-name', type=str, default='output_video.mp4', help='give a file name to the output video')
 
     # get path from user
-    path = '/home/ryan/deoldify_smoothed/quickclip.mp4'
+    path = '/home/ryan/deoldify_smoothed/test_videos/quickclip.mp4'
 
     # break video into frames
     frames = video_breakdown(path=path)
