@@ -57,7 +57,7 @@ def deoldify_smoothed(frames):
         if i > 0:
             # grab images
             input_image = np.array(colorized_frame)
-            ref_image = deoldified_frames[i-1]
+            ref_image = deoldified_frames[0]
 
             # get color transfer object
             PT = ColorTransfer()
