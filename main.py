@@ -11,10 +11,12 @@ warnings.filterwarnings("ignore", category=UserWarning, message=".*?Your .*? set
 import cv2
 from python_color_transfer.color_transfer import ColorTransfer
 import numpy as np
-from moviepy.editor import ImageSequenceClip
+from moviepy.editor import ImageSequenceClip, VideoFileClip, clips_array
 from skimage.color import rgb2lab, deltaE_ciede2000
 import argparse
 import matplotlib.pyplot as plt
+import pygame
+import time
 
 
 
@@ -83,6 +85,19 @@ def save_video(frames):
     clip = ImageSequenceClip(list(frames), fps=20)
     clip.write_videofile('result_videos/output.mp4')
 
+
+def show_video(video_1_frames, video_2_frames):
+    # Load your two videos
+    clip1 = ImageSequenceClip(list(video_1_frames), fps=20)
+    clip2 = ImageSequenceClip(list(video_2_frames), fps=20)
+
+    # Create a single video clip that places the two videos side by side
+    final_clip = clips_array([[clip1, clip2]])
+
+    # Write the result to a file
+    final_clip.preview()
+
+
 def calculate_lab_difference(image1, image2):
     # Convert the images to the LAB color space
     image1_lab = rgb2lab(image1)
@@ -105,8 +120,8 @@ def calculate_lab_difference(image1, image2):
     # Calculate the CIEDE2000 color difference
     return deltaE_ciede2000(image1_lab, image2_lab)
 
-def compare_frames(frame1, frame2, frame_num):
 
+def compare_frames(frame1, frame2, frame_num):
     # Calculate and print the average CIEDE2000 color difference
     avg_ciede2000 = np.mean(calculate_lab_difference(frame1, frame2))
     # Calculate and print the average LAB difference (min:0 , max)
@@ -124,7 +139,7 @@ if __name__ == "__main__":
     parser.add_argument('--output-name', type=str, default='output_video.mp4', help='give a file name to the output video')
 
     # get path from user
-    path = 'test_videos/quickclip.mp4'
+    path = 'test_videos/marching.mp4'
 
     # break video into frames
     # if color video
@@ -155,7 +170,10 @@ if __name__ == "__main__":
     plt.show()
     #Rob Stuff
 
-#0,1   2,3   4,5  6,7 8,9
+    #0,1   2,3   4,5  6,7 8,9
     # save video
     save_video(deoldified_frames)
+
+    # show video
+    show_video(frames, deoldified_frames)
 
