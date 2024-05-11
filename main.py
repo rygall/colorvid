@@ -44,6 +44,8 @@ def video_breakdown(path):
 def deoldify_smoothed(frames):
 
     deoldified_frames = []
+    colorizer = get_image_colorizer(artistic=True)
+    render_factor=30
 
     for i in range(0, len(frames)-1):
 
@@ -51,8 +53,7 @@ def deoldify_smoothed(frames):
         frame = frames[i]
         
         """DEOLDIFY COLORIZATION"""
-        colorizer = get_image_colorizer(artistic=True)
-        render_factor=30
+        
         colorized_frame = colorizer.get_transformed_image(frame, render_factor=render_factor, watermarked=False)
 
         """COLOR TRANSFER FIRST FRAME COLORS TO NEW DEOLDIFIED IMAGE"""
