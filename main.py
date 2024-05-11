@@ -150,6 +150,9 @@ if __name__ == "__main__":
     # deoldify frames
     deoldified_frames = deoldify_smoothed(frames=frames)
 
+    # show video preview
+    show_video(frames, deoldified_frames)
+
     #Rob Stuff Start
     test_frames_float = np.linspace(0, len(deoldified_frames)-1, 10)
 
@@ -166,12 +169,11 @@ if __name__ == "__main__":
         for ax in axs[index]:
             ax.axis('off')
     plt.show()
-    #Rob Stuff
+    #Rob Stuff End
 
-    #0,1   2,3   4,5  6,7 8,9
     # save video
     save_video(deoldified_frames)
 
-    # show video
+    # show video preview
     show_video(frames, deoldified_frames)
 
