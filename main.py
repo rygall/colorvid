@@ -6,7 +6,7 @@ from deoldify.visualize import *
 plt.style.use('dark_background')
 torch.backends.cudnn.benchmark=True
 import warnings
-warnings.filterwarnings("ignore", category=UserWarning, message=".*?Your .*? set is empty.*?")
+warnings.filterwarnings("ignore")
 
 import cv2
 from python_color_transfer.color_transfer import ColorTransfer
@@ -53,10 +53,9 @@ def deoldify_smoothed(frames):
         frame = frames[i]
         
         """DEOLDIFY COLORIZATION"""
-        
         colorized_frame = colorizer.get_transformed_image(frame, render_factor=render_factor, watermarked=False)
 
-        """COLOR TRANSFER FIRST FRAME COLORS TO NEW DEOLDIFIED IMAGE"""
+        """COLOR TRANSFER FIRST FRAME COLORS TO NEW DEOLDIFIED FRAME"""
         if i > 0:
             # grab images
             input_image = np.array(colorized_frame)
