@@ -16,8 +16,6 @@ from skimage.color import rgb2lab, deltaE_ciede2000
 import argparse
 import matplotlib.pyplot as plt
 import pygame
-import time
-
 
 
 def video_breakdown(path):
