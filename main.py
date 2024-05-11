@@ -100,21 +100,6 @@ def calculate_lab_difference(image1, image2):
     # Convert the images to the LAB color space
     image1_lab = rgb2lab(image1)
     image2_lab = rgb2lab(image2)
-
-    # Define a threshold to ignore white pixels (you can adjust this value)
-    white_threshold = 1.00
-
-    # Create masks for the white pixels
-    mask1 = np.all(image1 > white_threshold, axis=-1)
-    mask2 = np.all(image2 > white_threshold, axis=-1)
-
-    # Create a combined mask that ignores white pixels in either image
-    mask = np.logical_or(mask1, mask2)
-
-    # Apply the mask to the LAB images
-    image1_lab = image1_lab[~mask]
-    image2_lab = image2_lab[~mask]
-
     # Calculate the CIEDE2000 color difference
     return deltaE_ciede2000(image1_lab, image2_lab)
 
@@ -123,9 +108,9 @@ def compare_frames(frame1, frame2, frame_num):
     # Calculate and print the average CIEDE2000 color difference
     avg_ciede2000 = np.mean(calculate_lab_difference(frame1, frame2))
     # Calculate and print the average LAB difference (min:0 , max)
-    print("Frame Number: "+ str(frame_num))
-    print(f'Average CIEDE2000 Color Difference = {avg_ciede2000}')
-    print('-----------------------------------------------')
+    #print("Frame Number: "+ str(frame_num))
+    #print(f'Average CIEDE2000 Color Difference = {avg_ciede2000}')
+    #print('-----------------------------------------------')
     return avg_ciede2000
                 
 
@@ -137,7 +122,7 @@ if __name__ == "__main__":
     parser.add_argument('--output-name', type=str, default='output_video.mp4', help='give a file name to the output video')
 
     # get path from user
-    path = 'test_videos/marching.mp4'
+    path = 'test_videos/newyork.mp4'
 
     # break video into frames
     # if color video
@@ -154,17 +139,27 @@ if __name__ == "__main__":
     show_video(frames, deoldified_frames)
 
     #Rob Stuff Start
-    test_frames_float = np.linspace(0, len(deoldified_frames)-1, 10)
+    test_frames_float = np.linspace(0, len(deoldified_frames)-1, 5)
 
     test_frames_int = [int(round(num)) for num in test_frames_float]
 
-    fig, axs = plt.subplots(10, 2, figsize=(10, 10))  # Change the figure size here
+    fig, axs = plt.subplots(5, 3, figsize=(10, 10))  # Change the figure size here
 
     for index, frame_num in enumerate(test_frames_int):
-        compare_frames(frames[frame_num], deoldified_frames[frame_num], frame_num)
+        frame_dif = compare_frames(frames[frame_num], deoldified_frames[frame_num], frame_num)
         # Create subplots
+        #Original Frames
         axs[index,0].imshow(frames[frame_num])  
-        axs[index,1].imshow(deoldified_frames[frame_num]) 
+        axs[index,0].set_title('Original Frame: '+str(frame_num))
+
+        #Color Difference Text
+        axs[index, 1].text(0.5, 0.5, 'CIEDE2000 Color Difference:\n '+str(frame_dif), horizontalalignment='center', verticalalignment='center', fontsize=12, transform=axs[index, 1].transAxes)
+        axs[index, 1].axis('off')  # Hide axes
+
+        #Colorized Frames
+        axs[index,2].imshow(deoldified_frames[frame_num]) 
+        axs[index,2].set_title('Colorized Frame: '+str(frame_num))
+
         # Remove the axis
         for ax in axs[index]:
             ax.axis('off')
