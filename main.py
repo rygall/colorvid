@@ -118,8 +118,8 @@ if __name__ == "__main__":
     arg_parser = argparse.ArgumentParser(description="testing")
     parser = argparse.ArgumentParser(description='test')
     # the hyphen makes the argument optional
-    parser.add_argument('--input-video', type=str, default='test_video.mp4', help='specify the name of the input video')
-    parser.add_argument('--output-name', type=str, default='output_video.mp4', help='give a file name to the output video')
+    parser.add_argument('--input-path', type=str, default='test_video.mp4', help='specify the name of the input video')
+    parser.add_argument('--color-input', type=str, default='output_video.mp4', help='give a file name to the output video')
 
     # get path from user
     path = 'test_videos/newyork.mp4'
