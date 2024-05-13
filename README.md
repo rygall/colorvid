@@ -12,10 +12,7 @@
 The weights & baises are located at the following link:
     https://drive.google.com/file/d/1BkYOTFbbwCcrTO6HKCPxR4Rjmsq4QXBe/view?usp=drive_link
 
-Place the downloaded file into the *models* folder
-
-
-**All set!**
+Place the downloaded file into the *models* folder.
 
 
 # Running the Program
