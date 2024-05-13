@@ -24,4 +24,3 @@ To run the program, enter the following command:
 
 
 # Examples
-To run an example

@@ -9,7 +9,7 @@ torchvision==0.18.0
 opencv-python==4.9.0.80
 ffmpeg==1.4
 yt_dlp==2024.4.9
-IPython==8.24.0
+IPython==8.18.1
 python_color_transfer==0.1.2a0
 moviepy==1.0.3
 scikit-image==0.23.2

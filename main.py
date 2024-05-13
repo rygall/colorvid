@@ -122,7 +122,7 @@ if __name__ == "__main__":
     parser.add_argument('--color-input', type=str, default='output_video.mp4', help='give a file name to the output video')
 
     # get path from user
-    path = 'test_videos/newyork.mp4'
+    path = 'input_videos/quickclip.mp4'
 
     # break video into frames
     # if color video
