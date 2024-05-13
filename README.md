@@ -1,13 +1,13 @@
 # Installation:
-## Clone the repository:
+## Clone the Repository
 
     git clone https://github.com/rygall/colorvid.git
 
-## Move into the directory:
+## Move into Directory
 
     cd colorvid
 
-## Install all required packages:
+## Install Required Packages
 
     pip install -r requirements.txt
 
@@ -19,7 +19,7 @@
 
 All set!
 
-# Running the Program:
+# Running the Program
 If there is a specific folder you would like to run, place it in the input_videos folder.
 
 To run the program, enter the following command:
