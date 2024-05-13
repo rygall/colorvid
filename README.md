@@ -16,7 +16,7 @@ Place the downloaded file into the _**models**_ folder.
 
 
 # Running the Program
-If there is a specific folder you would like to run, place it in the input_videos folder.
+If there is a specific video you would like to use as input, place it in the  _**input_videos**_ folder.
 
 To run the program, enter the following command:
 
