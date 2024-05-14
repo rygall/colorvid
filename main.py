@@ -53,12 +53,12 @@ def video_breakdown_color(path):
 
     # frames array
     frames = []
-
-    # 
+    orig_color_frames = []
 
     while success: 
         # extract frame
         success, frame = video.read() 
+        orig_color_frames.append(frame)
 
         # add frame to frames array
         if success:
@@ -67,7 +67,7 @@ def video_breakdown_color(path):
             grey3 = cv2.cvtColor(grey, cv2.COLOR_GRAY2RGB)
             frames.append(grey3)
     video.release()
-    return frames
+    return frames, orig_color_frames
 
 
 def deoldify_smoothed(frames):
@@ -198,16 +198,19 @@ if __name__ == "__main__":
     # breakdown video into frames
     if color:
         print("color detected")
-        frames = video_breakdown_color(path=path)
+        frames, color_frames = video_breakdown_color(path=path)
+        # deoldify frames
+        deoldified_frames = deoldify_smoothed(frames=frames)
+        # show video preview
+        show_video(color_frames, deoldified_frames)
+        frames = color_frames
     else: 
         print("greyscale detected")
         frames = video_breakdown(path=path)
-    
-    # deoldify frames
-    deoldified_frames = deoldify_smoothed(frames=frames)
+        deoldified_frames = deoldify_smoothed(frames=frames)
+        show_video(frames, deoldified_frames)
 
-    # show video preview
-    show_video(frames, deoldified_frames)
+    
 
     # testing start
     test_frames_float = np.linspace(0, len(deoldified_frames)-1, 5)
