@@ -24,3 +24,7 @@ To run the program, enter the following command:
 
 
 Results are saved in the _**result_videos**_ folder.
+
+
+# Examples
+There are examples of videos that have been colorized in the _**result_videos**_ folder.
