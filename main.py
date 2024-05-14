@@ -16,6 +16,7 @@ from skimage.color import rgb2lab, deltaE_ciede2000
 import argparse
 import matplotlib.pyplot as plt
 import pygame
+from PIL import Image, ImageChops
 
 
 def video_breakdown(path):
@@ -36,6 +37,32 @@ def video_breakdown(path):
         # add frame to frames array
         if success:
             frames.append(frame)
+
+    video.release()
+    return frames
+
+
+def video_breakdown_color(path):
+    # import video
+    video = cv2.VideoCapture(path)
+
+    # checks whether frames were extracted 
+    success = 1
+
+    # frames array
+    frames = []
+
+    while success: 
+        # extract frame
+        success, frame = video.read() 
+
+        # add frame to frames array
+        if success:
+            # convert frame to greyscale
+            frame = Image.fromarray(frame).convert('L')
+            frame = np.array(frame)
+            stacked_img = np.stack((frame,)*3, axis=-1)
+            frames.append(stacked_img)
 
     video.release()
     return frames
@@ -112,25 +139,54 @@ def compare_frames(frame1, frame2, frame_num):
     #print(f'Average CIEDE2000 Color Difference = {avg_ciede2000}')
     #print('-----------------------------------------------')
     return avg_ciede2000
-                
+
+
+def get_user_input():
+    path = 'input_videos/'
+    dir_list = os.listdir(path)
+
+    i = 1
+    for file in dir_list:
+        print("("+ str(i) + ") " + file)
+        i += 1
+    video = input("Enter the number of the video you want to deoldify: ")
+
+    i = 1
+    input_video = None
+    for file in dir_list:
+        if i == int(video):
+            input_video = file
+        i += 1
+    
+    return 'input_videos/' + input_video
+
+
+def detect_color(path):
+    """
+    Check if image is monochrome (1 channel or 3 identical channels)
+    """
+    video = cv2.VideoCapture(path)
+    success, frame = video.read() 
+    image = Image.fromarray(frame)
+    color_count = image.getcolors()
+    if color_count:
+        return True
+    else:
+        return False
+
 
 if __name__ == "__main__":
-    arg_parser = argparse.ArgumentParser(description="testing")
-    parser = argparse.ArgumentParser(description='test')
-    # the hyphen makes the argument optional
-    parser.add_argument('--input-path', type=str, default='test_video.mp4', help='specify the name of the input video')
-    parser.add_argument('--color-input', type=str, default='output_video.mp4', help='give a file name to the output video')
-
     # get path from user
-    path = 'input_videos/quickclip.mp4'
+    path = get_user_input()
 
-    # break video into frames
-    # if color video
-    #    color_frames = video_breakdown(path=path)
-    #    convert_to_blackwhite(path)
-    #    frames = video_breakdown(path = bwpath)
-    #else: 
-    frames = video_breakdown(path=path)
+    # detect if color video input
+    color = detect_color(path=path)
+
+    # breakdown video into frames
+    if color:
+        frames = video_breakdown_color(path=path)
+    else: 
+        frames = video_breakdown(path=path)
     
     # deoldify frames
     deoldified_frames = deoldify_smoothed(frames=frames)
@@ -138,7 +194,7 @@ if __name__ == "__main__":
     # show video preview
     show_video(frames, deoldified_frames)
 
-    #Rob Stuff Start
+    # testing start
     test_frames_float = np.linspace(0, len(deoldified_frames)-1, 5)
 
     test_frames_int = [int(round(num)) for num in test_frames_float]
@@ -164,11 +220,10 @@ if __name__ == "__main__":
         for ax in axs[index]:
             ax.axis('off')
     plt.show()
-    #Rob Stuff End
+    # testing end
 
     # save video
+    name = os.path.splitext(path)[0]
+    result_name = 'result_videos/' + name + "_output.mp4"
     save_video(deoldified_frames)
-
-    # show video preview
-    show_video(frames, deoldified_frames)
 
