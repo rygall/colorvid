@@ -52,6 +52,8 @@ def video_breakdown_color(path):
     # frames array
     frames = []
 
+    # 
+
     while success: 
         # extract frame
         success, frame = video.read() 
