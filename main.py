@@ -56,6 +56,9 @@ def video_breakdown_color(path):
         # extract frame
         success, frame = video.read() 
 
+        print(np.shape(frame))
+        print(success)
+
         # add frame to frames array
         if success:
             # convert frame to greyscale
