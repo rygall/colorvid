@@ -31,8 +31,11 @@ def video_breakdown(path):
     frames = []
 
     while success: 
+
         # extract frame
         success, frame = video.read() 
+        print(np.shape(frame))
+
 
         # add frame to frames array
         if success:
@@ -58,17 +61,12 @@ def video_breakdown_color(path):
         # extract frame
         success, frame = video.read() 
 
-        print(np.shape(frame))
-        print(success)
-
         # add frame to frames array
         if success:
             # convert frame to greyscale
-            frame = Image.fromarray(frame).convert('L')
-            frame = np.array(frame)
-            stacked_img = np.stack((frame,)*3, axis=-1)
-            frames.append(stacked_img)
-
+            grey = cv2.cvtColor(frame, cv2.COLOR_RGB2GRAY)
+            grey3 = cv2.cvtColor(grey, cv2.COLOR_GRAY2RGB)
+            frames.append(grey3)
     video.release()
     return frames
 
