@@ -23,4 +23,4 @@ To run the program, enter the following command:
     python main.py 
 
 
-# Examples
+Results are saved into the _**result_videos**_ folder.
