@@ -16,7 +16,7 @@ from skimage.color import rgb2lab, deltaE_ciede2000
 import argparse
 import matplotlib.pyplot as plt
 import pygame
-from PIL import Image, ImageChops
+from PIL import Image, ImageStat
 
 
 def video_breakdown(path):
@@ -34,7 +34,6 @@ def video_breakdown(path):
 
         # extract frame
         success, frame = video.read() 
-        print(np.shape(frame))
 
 
         # add frame to frames array
@@ -164,31 +163,44 @@ def get_user_input():
     return 'input_videos/' + input_video
 
 
-def detect_color(path):
-    """
-    Check if image is monochrome (1 channel or 3 identical channels)
-    """
-    video = cv2.VideoCapture(path)
+def detect_color(file, thumb_size=40, MSE_cutoff=22, adjust_color_bias=True):
+    # import video
+    video = cv2.VideoCapture(file)
     success, frame = video.read() 
-    image = Image.fromarray(frame)
-    color_count = image.getcolors()
-    if color_count:
-        return True
+    pil_img = Image.fromarray(frame)
+    bands = pil_img.getbands()
+    if bands == ('R','G','B') or bands== ('R','G','B','A'):
+        thumb = pil_img.resize((thumb_size,thumb_size))
+        SSE, bias = 0, [0,0,0]
+        if adjust_color_bias:
+            bias = ImageStat.Stat(thumb).mean[:3]
+            bias = [b - sum(bias)/3 for b in bias ]
+        for pixel in thumb.getdata():
+            mu = sum(pixel)/3
+            SSE += sum((pixel[i] - mu - bias[i])*(pixel[i] - mu - bias[i]) for i in [0,1,2])
+        MSE = float(SSE)/(thumb_size*thumb_size)
+        if MSE <= MSE_cutoff:
+            return False
+        else:
+            return True
+    elif len(bands)==1:
+        return None
     else:
-        return False
-
+        return None
 
 if __name__ == "__main__":
     # get path from user
     path = get_user_input()
 
     # detect if color video input
-    color = detect_color(path=path)
+    color = detect_color(path)
 
     # breakdown video into frames
     if color:
+        print("color detected")
         frames = video_breakdown_color(path=path)
     else: 
+        print("greyscale detected")
         frames = video_breakdown(path=path)
     
     # deoldify frames
