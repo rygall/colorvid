@@ -58,11 +58,10 @@ def video_breakdown_color(path):
     while success: 
         # extract frame
         success, frame = video.read() 
-        orig_color_frames.append(frame)
-
         # add frame to frames array
         if success:
             # convert frame to greyscale
+            orig_color_frames.append(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
             grey = cv2.cvtColor(frame, cv2.COLOR_RGB2GRAY)
             grey3 = cv2.cvtColor(grey, cv2.COLOR_GRAY2RGB)
             frames.append(grey3)
@@ -108,9 +107,9 @@ def deoldify_smoothed(frames):
     return deoldified_frames
 
 
-def save_video(frames):
+def save_video(frames,result_name):
     clip = ImageSequenceClip(list(frames), fps=20)
-    clip.write_videofile('result_videos/output.mp4')
+    clip.write_videofile(result_name)
 
 
 def show_video(video_1_frames, video_2_frames):
@@ -211,7 +210,6 @@ if __name__ == "__main__":
         show_video(frames, deoldified_frames)
 
     
-
     # testing start
     test_frames_float = np.linspace(0, len(deoldified_frames)-1, 5)
 
@@ -241,7 +239,7 @@ if __name__ == "__main__":
     # testing end
 
     # save video
-    name = os.path.splitext(path)[0]
-    result_name = 'result_videos/' + name + "_output.mp4"
-    save_video(deoldified_frames)
+    name = os.path.splitext(os.path.basename(path))[0]
+    result_name = 'result_videos/' + str(name) + "_output.mp4"
+    save_video(deoldified_frames,result_name)
 
