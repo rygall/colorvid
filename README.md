@@ -16,7 +16,7 @@ Place the downloaded file into the _**models**_ folder.
 
 
 # Running the Program
-Note: Having a GPU is recommended
+*Note: Having a GPU is recommended*
 
 If there is a specific .mp4 you would like to use as input, place it in the  _**input_videos**_ folder.
 
