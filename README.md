@@ -24,8 +24,6 @@ To run the program, enter the following command:
 
     python main.py 
 
-Then select a file to colorize using the interface.
-
 Results are saved in the _**result_videos**_ folder.
 
 
