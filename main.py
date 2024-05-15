@@ -135,10 +135,6 @@ def calculate_lab_difference(image1, image2):
 def compare_frames(frame1, frame2, frame_num):
     # Calculate and print the average CIEDE2000 color difference
     avg_ciede2000 = np.mean(calculate_lab_difference(frame1, frame2))
-    # Calculate and print the average LAB difference (min:0 , max)
-    #print("Frame Number: "+ str(frame_num))
-    #print(f'Average CIEDE2000 Color Difference = {avg_ciede2000}')
-    #print('-----------------------------------------------')
     return avg_ciede2000
 
 
@@ -210,7 +206,6 @@ if __name__ == "__main__":
         show_video(frames, deoldified_frames)
 
     
-    # testing start
     test_frames_float = np.linspace(0, len(deoldified_frames)-1, 5)
 
     test_frames_int = [int(round(num)) for num in test_frames_float]
@@ -235,8 +230,8 @@ if __name__ == "__main__":
         # Remove the axis
         for ax in axs[index]:
             ax.axis('off')
+
     plt.show()
-    # testing end
 
     # save video
     name = os.path.splitext(os.path.basename(path))[0]
