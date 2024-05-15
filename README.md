@@ -15,7 +15,8 @@ The weights & baises are located at the following link:
 Place the downloaded file into the _**models**_ folder.
 
 
-# Running the Program (Having a GPU is Recommended) 
+# Running the Program
+__NOTE: Having a GPU is recommended__
 If there is a specific .mp4 you would like to use as input, place it in the  _**input_videos**_ folder.
 
 To run the program, enter the following command:
